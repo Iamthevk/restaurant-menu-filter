@@ -73,10 +73,32 @@ const menu = [
   },
 ];
 
-const menuParent = document.querySelector(".section-center")
+const menuParent = document.querySelector(".section-center");
+const filterBtns = document.querySelectorAll(".filter-btn");
 
+//load items
 window.addEventListener("DOMContentLoaded",() => {
-  let displayItems =  menu.map((item) => {
+  displayMenuItems(menu)
+})
+
+//filter items
+filterBtns.forEach(btn => btn.addEventListener('click', e => {
+  // console.log(e.currentTarget.dataset)
+  const category = e.currentTarget.dataset.id;
+  const filterCategory = menu.filter(menuItems => {
+     return menuItems.category === category;
+  })
+  //because menuItems.category has not any "all" property so 
+  if(category === "all"){
+    return displayMenuItems(menu)
+  }
+  return displayMenuItems(filterCategory)
+}
+
+))
+
+function displayMenuItems(menuItems){
+  let displayItems =  menuItems.map((item) => {
     return (
       `<article class="menu-item">
           <img src=${item.img} alt=${item.title} class="photo" />
@@ -95,4 +117,4 @@ window.addEventListener("DOMContentLoaded",() => {
   })
   displayItems = displayItems.join("")
   menuParent.innerHTML = displayItems
-})
+}
